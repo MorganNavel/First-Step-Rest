@@ -1,0 +1,13 @@
+body{
+    font-family: Arial, Helvetica, sans-serif;
+}
+.etablissement{
+    background-color: #1d7cc7;
+    box-shadow: grey;
+    box-sizing: content-box;
+    border: solid;
+    /* border-color: grey; */
+}
+h1{
+    text-align: center;
+}

@@ -6,7 +6,7 @@ $.getJSON(`http://localhost:3000/api/type/${selected_type}`, (data) => {
   for (const establishment of data) {
     let res = "";
     if (establishment.properties.name != null) {
-      res += `<div> <h2>${establishment.properties.name}</h2>`;
+      res += `<div class="etablissement"> <h2>${establishment.properties.name}</h2>`;
 
       if (
         establishment.properties.addr_housenumber != null &&
@@ -18,7 +18,6 @@ $.getJSON(`http://localhost:3000/api/type/${selected_type}`, (data) => {
       if (establishment.properties.tags != null) {
         let tags = establishment.properties.tags;
         tags = tags.split(",");
-        // console.log(tags);
         for (let tag of tags) {
           let sub_tag = tag.split("=>");
           if (sub_tag.length > 1) {
@@ -30,15 +29,19 @@ $.getJSON(`http://localhost:3000/api/type/${selected_type}`, (data) => {
               sub_tag[0] == " contact:facebook" ||
               sub_tag[0] == " website"
             ) {
-              console.log(`${sub_tag[0]} ${sub_tag[1]}`);
-              res += `${sub_tag[0]} ${sub_tag[1]}<br>`;
+              if (
+                sub_tag[0] == " contact:facebook" ||
+                sub_tag[0] == " website"
+              ) {
+                res += `<a href="${sub_tag[1]}">${sub_tag[0]}</a><br>`;
+              } else {
+                res += `${sub_tag[0]} ${sub_tag[1]}<br>`;
+              }
             }
           }
-          console.log(res);
         }
       }
-
-      liste_etablissements.innerHTML += res + "<hr></div>";
+      liste_etablissements.innerHTML += res + "</div><hr>";
     }
   }
 });
