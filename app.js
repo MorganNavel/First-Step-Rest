@@ -8,18 +8,13 @@ let bodyParser = require("body-parser");
 const db = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "",
+  password: "26122002Mn@ping",
   database: "website",
 });
 db.connect(function (err) {
   if (err) throw err;
   console.log("Connecté à la base de données MySQL!");
 });
-db.query("SELECT * FROM user", function (err, result) {
-  if (err) throw err;
-  console.log(result);
-});
-
 app.listen(port, () => {
   console.log(`Notre application Node écoute sur : http://localhost:${port}`);
 });
@@ -38,5 +33,35 @@ app
 app.post("/api/formulaire", (req, res) => {
   console.log("Traitement du formulaire en cours");
   let data = req.body;
+
+  let name = data.name;
+  let first_name = data.first_name;
+  let address_mail = data.address_mail;
+  let birthday = data.birthday;
+  let city = data.city;
+  let country = data.country;
+  let address = data.address;
+  let postal_code = data.postal_code;
+  let password = data.password;
+  console.log(password);
   console.log(data);
+  var sql = "INSERT INTO USER VALUES(?,?,?,?,?,?,?,?,?,?)";
+  db.query(
+    sql,
+    [
+      name,
+      first_name,
+      birthday,
+      address_mail,
+      city,
+      postal_code,
+      country,
+      address,
+      password,
+    ],
+    function (err, result) {
+      if (err) throw err;
+      console.log(result);
+    }
+  );
 });
