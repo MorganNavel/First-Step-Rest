@@ -3,12 +3,14 @@ const morgan = require("morgan");
 const fs = require("fs");
 const app = express();
 const port = 3000;
+
+
 const mysql = require("mysql");
 let bodyParser = require("body-parser");
 const db = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "26122002Mn@ping",
+  password: "",
   database: "website",
 });
 db.connect(function (err) {
@@ -18,20 +20,21 @@ db.connect(function (err) {
 app.listen(port, () => {
   console.log(`Notre application Node écoute sur : http://localhost:${port}`);
 });
+//Middleware
 app
   .use((req, res, next) => {
     morgan("dev");
     next();
   })
   .use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Origin", "*"); //crossorigin problem
     next();
   })
   .use(bodyParser.urlencoded({ extended: true }))
   .use(bodyParser.json());
 
-app.post("/api/formulaire", (req, res) => {
-  console.log("Traitement du formulaire en cours");
+app.post("/api/form", (req, res) => {
+  console.log("Processing form");
   let data = req.body;
 
   let name = data.name;
@@ -43,25 +46,22 @@ app.post("/api/formulaire", (req, res) => {
   let address = data.address;
   let postal_code = data.postal_code;
   let password = data.password;
-  console.log(password);
-  console.log(data);
-  var sql = "INSERT INTO USER VALUES(?,?,?,?,?,?,?,?,?,?)";
+  var sql = "INSERT INTO USER VALUES(0,?,?,?,?,?,?,?,?,?);";
   db.query(
     sql,
     [
       name,
       first_name,
-      birthday,
       address_mail,
       city,
-      postal_code,
+      birthday,
+      password,
       country,
       address,
-      password,
+      postal_code,
     ],
     function (err, result) {
       if (err) throw err;
-      console.log(result);
     }
   );
 });
